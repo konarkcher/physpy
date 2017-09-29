@@ -23,11 +23,3 @@ def linear(x, y):
     sigma_b = sigma_k * np.sqrt(np.abs(np.average(x**2) - np.average(x)**2))
 
     return k, b, sigma_k, sigma_b
-
-
-def error(tup):
-    res = 0
-    for er in tup:
-        res += er**2
-
-    return np.sqrt(res)
