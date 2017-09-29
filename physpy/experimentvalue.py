@@ -55,7 +55,7 @@ class ExperimentValue:
         return ExperimentValue(abs(self.value), self.sigma)
 
     def __str__(self):
-        pattern = '{:.3f}, sigma = {:.3f}, epsilon = {:.2f}%'
+        pattern = '{:.3e}, sigma = {:.3e}, epsilon = {:.2f}%'
         return pattern.format(self.value, self.sigma, self.epsilon * 100)
 
     def __repr__(self):
