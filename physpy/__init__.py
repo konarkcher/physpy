@@ -1,6 +1,5 @@
 from physpy import ols
+from physpy import pyplot
 from physpy.experimentvalue import ExperimentValue
-from physpy.pyplot import plot
 
 del experimentvalue
-del pyplot
