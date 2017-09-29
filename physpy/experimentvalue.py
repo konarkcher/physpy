@@ -1,4 +1,5 @@
 import math
+import copy
 
 
 class ExperimentValue:
@@ -8,8 +9,8 @@ class ExperimentValue:
         if sigma and eps:
             raise ValueError()
 
-        self.sigma = value * eps if eps else sigma
-        self.eps = sigma / value if sigma else eps
+        self.sigma = abs(value * eps) if eps else abs(sigma)
+        self.eps = sigma / abs(value) if sigma else abs(eps)
 
     def __add__(self, other):
         sigma = math.sqrt(self.sigma**2 + other.sigma**2)
@@ -31,6 +32,15 @@ class ExperimentValue:
         if modulo is not None:
             raise ValueError
         return ExperimentValue(self.value**power, eps=self.eps * power)
+
+    def __neg__(self):
+        return ExperimentValue(-self.value, self.sigma)
+
+    def __pos__(self):
+        return copy.copy(self)
+
+    def __abs__(self):
+        return ExperimentValue(abs(self.value), self.sigma)
 
     def __str__(self):
         pattern = '{:.3f}, sigma = {:.3f}, eps = {:.2f}%'
