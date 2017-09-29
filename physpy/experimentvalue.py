@@ -42,7 +42,7 @@ class ExperimentValue:
 
     def __pow__(self, power, modulo=None):
         if modulo is not None:
-            raise ValueError
+            raise ValueError()
         return ExperimentValue(self.value**power, eps=self.eps * power)
 
     def __neg__(self):
