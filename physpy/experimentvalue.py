@@ -58,6 +58,9 @@ class ExperimentValue:
         pattern = '{:.3f}, sigma = {:.3f}, epsilon = {:.2f}%'
         return pattern.format(self.value, self.sigma, self.epsilon * 100)
 
+    def __repr__(self):
+        return self.__str__()
+
 
 def sqrt(ev):
     return ExperimentValue(math.sqrt(ev.value), epsilon=0.5 * ev.epsilon)
