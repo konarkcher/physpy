@@ -10,6 +10,7 @@ class ExperimentValue:
 
             self._value = value._value
             sigma = value._sigma
+            name = value._name
         else:
             self._value = value
 
