@@ -3,13 +3,13 @@ import copy
 
 
 class ExperimentValue:
-    def __init__(self, value, sigma=0.0, epsilon=0.0, name=''):
+    def __init__(self, value, sigma=0.0, epsilon=0.0, unit=''):
         if isinstance(value, ExperimentValue):
             if sigma or epsilon:
                 raise ValueError()
 
             sigma = value._sigma
-            name = value._name
+            unit = value._unit
             value = value._value
 
         if sigma and epsilon:
@@ -18,7 +18,7 @@ class ExperimentValue:
         self._value = value
         self._sigma = abs(value * epsilon) if epsilon else abs(sigma)
         self._epsilon = abs(sigma / value) if sigma else abs(epsilon)
-        self._name = name
+        self._unit = unit
 
     @property
     def value(self):
@@ -33,12 +33,12 @@ class ExperimentValue:
         return self._epsilon
 
     @property
-    def name(self):
-        return self._name
+    def unit(self):
+        return self._unit
 
-    @name.setter
-    def name(self, new_name):
-        self._name = new_name
+    @unit.setter
+    def unit(self, new_unit):
+        self._unit = new_unit
 
     def __float__(self):
         return float(self.value)
@@ -47,7 +47,7 @@ class ExperimentValue:
         other = ExperimentValue(other)
 
         sigma = math.sqrt(self.sigma**2 + other.sigma**2)
-        return ExperimentValue(self.value + other.value, sigma, name=self._name)
+        return ExperimentValue(self.value + other.value, sigma, unit=self._unit)
 
     def __radd__(self, other):
         return ExperimentValue(other) + self
@@ -56,7 +56,7 @@ class ExperimentValue:
         other = ExperimentValue(other)
 
         sigma = math.sqrt(self.sigma**2 + other.sigma**2)
-        return ExperimentValue(self.value - other.value, sigma, name=self._name)
+        return ExperimentValue(self.value - other.value, sigma, unit=self._unit)
 
     def __rsub__(self, other):
         return ExperimentValue(other) - self
@@ -88,17 +88,17 @@ class ExperimentValue:
         return ExperimentValue(self.value**power, epsilon=self.epsilon * power)
 
     def __neg__(self):
-        return ExperimentValue(-self.value, self.sigma, name=self._name)
+        return ExperimentValue(-self.value, self.sigma, unit=self._unit)
 
     def __pos__(self):
         return copy.copy(self)
 
     def __abs__(self):
-        return ExperimentValue(abs(self.value), self.sigma, name=self._name)
+        return ExperimentValue(abs(self.value), self.sigma, unit=self._unit)
 
     def __str__(self):
         pattern = '{:.3e}{:s}, sigma = {:.3e}{:s}, epsilon = {:.2f}%'
-        return pattern.format(self.value, self.name, self.sigma, self.name, self.epsilon * 100)
+        return pattern.format(self.value, self.unit, self.sigma, self.unit, self.epsilon * 100)
 
     def __repr__(self):
         return self.__str__()
