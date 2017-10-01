@@ -8,15 +8,14 @@ class ExperimentValue:
             if sigma or epsilon:
                 raise ValueError()
 
-            self._value = value._value
             sigma = value._sigma
             name = value._name
-        else:
-            self._value = value
+            value = value._value
 
         if sigma and epsilon:
             raise ValueError()
 
+        self._value = value
         self._sigma = abs(value * epsilon) if epsilon else abs(sigma)
         self._epsilon = abs(sigma / value) if sigma else abs(epsilon)
         self._name = name
@@ -40,6 +39,9 @@ class ExperimentValue:
     @name.setter
     def name(self, new_name):
         self._name = new_name
+
+    def __float__(self):
+        return float(self.value)
 
     def __add__(self, other):
         other = ExperimentValue(other)
