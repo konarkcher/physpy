@@ -3,6 +3,11 @@ import copy
 
 
 class ExperimentValue:
+    def __new__(cls, value, sigma=0.0, epsilon=0.0, unit=''):
+        if isinstance(value, ExperimentValue):
+            return value
+        return super(ExperimentValue, cls).__new__(cls)
+
     def __init__(self, value, sigma=0.0, epsilon=0.0, unit=''):
         if sigma and epsilon:
             raise ValueError()
@@ -26,8 +31,7 @@ class ExperimentValue:
         return self._epsilon
 
     def __add__(self, other):
-        if not isinstance(other, ExperimentValue):
-            other = ExperimentValue(other)
+        other = ExperimentValue(other)
         sigma = math.sqrt(self.sigma**2 + other.sigma**2)
         return ExperimentValue(self.value + other.value, sigma, unit=self.unit)
 
@@ -35,19 +39,16 @@ class ExperimentValue:
         return self + other
 
     def __sub__(self, other):
-        if not isinstance(other, ExperimentValue):
-            other = ExperimentValue(other)
+        other = ExperimentValue(other)
         sigma = math.sqrt(self.sigma**2 + other.sigma**2)
         return ExperimentValue(self.value - other.value, sigma, unit=self.unit)
 
     def __rsub__(self, other):
-        if not isinstance(other, ExperimentValue):
-            other = ExperimentValue(other)
+        other = ExperimentValue(other)
         return other - self
 
     def __mul__(self, other):
-        if not isinstance(other, ExperimentValue):
-            other = ExperimentValue(other)
+        other = ExperimentValue(other)
         eps = math.sqrt(self.epsilon**2 + other.epsilon**2)
         return ExperimentValue(self.value * other.value, epsilon=eps)
 
@@ -55,14 +56,12 @@ class ExperimentValue:
         return self * other
 
     def __truediv__(self, other):
-        if not isinstance(other, ExperimentValue):
-            other = ExperimentValue(other)
+        other = ExperimentValue(other)
         eps = math.sqrt(self.epsilon**2 + other.epsilon**2)
         return ExperimentValue(self.value / other.value, epsilon=eps)
 
     def __rtruediv__(self, other):
-        if isinstance(other, ExperimentValue):
-            other = ExperimentValue(other)
+        other = ExperimentValue(other)
         return other / self
 
     def __pow__(self, power, modulo=None):
@@ -70,7 +69,6 @@ class ExperimentValue:
 
         if modulo is not None:
             raise ValueError()
-
         return ExperimentValue(self.value**power, epsilon=self.epsilon * power)
 
     def __neg__(self):
