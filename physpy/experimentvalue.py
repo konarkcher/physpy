@@ -44,8 +44,7 @@ class ExperimentValue:
         return ExperimentValue(self.value - other.value, sigma, unit=self.unit)
 
     def __rsub__(self, other):
-        other = ExperimentValue(other)
-        return other - self
+        return ExperimentValue(other) - self
 
     def __mul__(self, other):
         other = ExperimentValue(other)
@@ -61,8 +60,7 @@ class ExperimentValue:
         return ExperimentValue(self.value / other.value, epsilon=eps)
 
     def __rtruediv__(self, other):
-        other = ExperimentValue(other)
-        return other / self
+        return ExperimentValue(other) / self
 
     def __pow__(self, power, modulo=None):
         # TODO work with power as ExperimentalValue
