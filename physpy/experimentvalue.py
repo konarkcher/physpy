@@ -3,18 +3,28 @@ import copy
 
 
 class ExperimentValue:
-    def __new__(cls, value, sigma=0.0, epsilon=0.0, unit=''):
+    def __new__(cls, value, sigma=None, epsilon=None, unit=''):
         if isinstance(value, ExperimentValue):
             return value
         return super(ExperimentValue, cls).__new__(cls)
 
-    def __init__(self, value, sigma=0.0, epsilon=0.0, unit=''):
-        if sigma and epsilon:
+    def __init__(self, value, sigma=None, epsilon=None, unit=''):
+        if isinstance(value, ExperimentValue):
+            return
+        if sigma is not None and epsilon is not None:
             raise ValueError()
 
         self._value = value
-        self._sigma = abs(value * epsilon) if epsilon else abs(sigma)
-        self._epsilon = abs(sigma / value) if sigma else abs(epsilon)
+
+        if sigma is not None:
+            self._sigma = abs(sigma)
+            self._epsilon = abs(sigma / value)
+        elif epsilon is not None:
+            self._sigma = abs(value * epsilon)
+            self._epsilon = abs(epsilon)
+        else:
+            self._sigma = 0.0
+            self._epsilon = 0.0
 
         self.unit = unit
 
