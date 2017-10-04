@@ -3,14 +3,7 @@ import copy
 
 
 class ExperimentValue:
-    def __new__(cls, value, sigma=None, epsilon=None, unit=''):
-        if isinstance(value, ExperimentValue):
-            return value
-        return super(ExperimentValue, cls).__new__(cls)
-
     def __init__(self, value, sigma=None, epsilon=None, unit=''):
-        if isinstance(value, ExperimentValue):
-            return
         if sigma is not None and epsilon is not None:
             raise ValueError()
 
@@ -40,8 +33,14 @@ class ExperimentValue:
     def epsilon(self):
         return self._epsilon
 
+    @staticmethod
+    def cast(value):
+        if isinstance(value, ExperimentValue):
+            return value
+        return ExperimentValue(value)
+
     def __add__(self, other):
-        other = ExperimentValue(other)
+        other = ExperimentValue.cast(other)
         sigma = math.sqrt(self.sigma**2 + other.sigma**2)
         return ExperimentValue(self.value + other.value, sigma, unit=self.unit)
 
@@ -49,15 +48,15 @@ class ExperimentValue:
         return self + other
 
     def __sub__(self, other):
-        other = ExperimentValue(other)
+        other = ExperimentValue.cast(other)
         sigma = math.sqrt(self.sigma**2 + other.sigma**2)
         return ExperimentValue(self.value - other.value, sigma, unit=self.unit)
 
     def __rsub__(self, other):
-        return ExperimentValue(other) - self
+        return ExperimentValue.cast(other) - self
 
     def __mul__(self, other):
-        other = ExperimentValue(other)
+        other = ExperimentValue.cast(other)
         eps = math.sqrt(self.epsilon**2 + other.epsilon**2)
         return ExperimentValue(self.value * other.value, epsilon=eps)
 
@@ -65,12 +64,12 @@ class ExperimentValue:
         return self * other
 
     def __truediv__(self, other):
-        other = ExperimentValue(other)
+        other = ExperimentValue.cast(other)
         eps = math.sqrt(self.epsilon**2 + other.epsilon**2)
         return ExperimentValue(self.value / other.value, epsilon=eps)
 
     def __rtruediv__(self, other):
-        return ExperimentValue(other) / self
+        return ExperimentValue.cast(other) / self
 
     def __pow__(self, power, modulo=None):
         # TODO work with power as ExperimentalValue
