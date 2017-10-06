@@ -39,6 +39,39 @@ class ExperimentValue:
             return value
         return ExperimentValue(value)
 
+    def _format(self):
+        if not self.sigma:
+            return '{:.3e}'.format(self.value), '{:.3e}'.format(self.sigma) 
+    
+        lg = math.floor(math.log(abs(self.value)) / math.log(10))
+        sigma_lg = math.floor(math.log(abs(self.sigma)) / math.log(10))
+        if sigma_lg > lg:
+            lg = sigma_lg
+        
+        sigma_main = self.sigma * 10**-sigma_lg
+        temp = self.value * 10**-sigma_lg
+        nums = lg - sigma_lg
+        
+        sigma_first = round(abs(sigma_main))
+        if sigma_first < 4:
+            sgima_main = round(sigma_main * 10) / 10
+            temp = round(temp * 10) / 10
+            nums += 1
+        else:
+            sigma_main = round(sigma_main)
+            temp = round(temp)
+            nums
+        
+        temp *= 10 ** (sigma_lg - lg)
+        sigma_main *= 10 ** (sigma_lg - lg)
+        
+        pattern = '{:.' + str(nums) + 'f}'
+        
+        if lg:
+            return (pattern + 'e{:d}').format(temp, lg), (pattern + 'e{:d}').format(sigma_main, lg)
+        else:
+            return pattern.format(temp), pattern.format(sigma_main)
+
     def __add__(self, other):
         other = ExperimentValue.cast(other)
         sigma = math.sqrt(self.sigma**2 + other.sigma**2)
@@ -88,9 +121,9 @@ class ExperimentValue:
         return ExperimentValue(abs(self.value), self.sigma, unit=self.unit)
 
     def __str__(self):
-        pattern = '{:.3e}{:s}, sigma = {:.3e}{:s}, epsilon = {:.2f}%'
-        return pattern.format(self.value, self.unit, self.sigma, self.unit,
-                              self.epsilon * 100)
+        val, sig = self._format()
+        pattern = '{:s}{:s}, sigma = {:s}{:s}, epsilon = {:.2f}%'
+        return pattern.format(val, self.unit, sig, self.unit, self.epsilon * 100)
 
     def __repr__(self):
         return self.__str__()
