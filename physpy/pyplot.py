@@ -1,10 +1,8 @@
-import numpy as np
 import matplotlib.pyplot as plt
-import pandas as pd
 from matplotlib.ticker import AutoMinorLocator
 
 
-def draw_grid(title='', xlabel='x', ylabel='y'):
+def create_fig(title='', xlabel='x', ylabel='y'):
     fig = plt.figure(figsize=(10, 6))
     axes = plt.axes(title=title, xlabel=xlabel, ylabel=ylabel)
 

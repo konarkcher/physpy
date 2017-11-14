@@ -1,6 +1,5 @@
-from physpy import ols
 from physpy import pyplot
-from physpy import utilities
-from physpy.experimentvalue import *
+from physpy import utils
+from physpy.expvalue import *
 
-del experimentvalue
+del expvalue
