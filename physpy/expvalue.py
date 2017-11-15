@@ -95,6 +95,9 @@ class ExperimentValue:
     def __repr__(self):
         return self.__str__()
 
+    def __eq__(self, other):
+        return self.value == other.value and self.sigma == other.sigma
+
 
 def sqrt(ev):
     return ExperimentValue(math.sqrt(ev.value), epsilon=0.5 * ev.epsilon)
