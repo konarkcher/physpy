@@ -7,6 +7,7 @@ from physpy import ExperimentValue as Ev
 class TestExperimentValue(TestCase):
     def test___add__(self):
         self.assertEqual(Ev(2, 1) + Ev(3, 1), Ev(5, math.sqrt(2)))
+        self.assertEqual(Ev(2, 1) + 4, Ev(6, 1))
 
     def test___radd__(self):
         self.assertEqual(2 + Ev(3, 1), Ev(5, 1))
