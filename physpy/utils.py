@@ -36,10 +36,8 @@ def diff(theor, real):
     print('diff epsilon = {:.2f}%'.format(abs(theor - real) / theor * 100))
 
 def numbers_to_expvalues(arr, sigma=None, epsilon=None):
-    tmp = [pp.ExperimentValue(x, sigma, epsilon) for x in arr]
-    return np.array(tmp)
+    return np.array([pp.ExperimentValue(x, sigma, epsilon) for x in arr])
 
 def expvalues_to_numbers(arr):
-    tmp = [x.value for x in arr]
-    return np.array(tmp)
+    return np.array([x.value for x in arr])
 
