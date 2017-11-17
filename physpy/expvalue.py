@@ -11,7 +11,7 @@ class ExperimentValue:
 
         if sigma is not None:
             self._sigma = abs(sigma)
-            self._epsilon = abs(sigma / value)
+            self._epsilon = abs(sigma / value) if value != 0 else 0
         elif epsilon is not None:
             self._sigma = abs(value * epsilon)
             self._epsilon = abs(epsilon)
