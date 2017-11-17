@@ -34,7 +34,7 @@ class ExperimentValue:
         return self._epsilon
 
     @staticmethod
-    def cast(value):
+    def _cast(value):
         if isinstance(value, ExperimentValue):
             return value
         return ExperimentValue(value)
@@ -73,7 +73,7 @@ class ExperimentValue:
             return pattern.format(temp), pattern.format(sigma_main)
 
     def __add__(self, other):
-        other = ExperimentValue.cast(other)
+        other = ExperimentValue._cast(other)
         sigma = math.sqrt(self.sigma**2 + other.sigma**2)
         return ExperimentValue(self.value + other.value, sigma, unit=self.unit)
 
@@ -81,15 +81,15 @@ class ExperimentValue:
         return self + other
 
     def __sub__(self, other):
-        other = ExperimentValue.cast(other)
+        other = ExperimentValue._cast(other)
         sigma = math.sqrt(self.sigma**2 + other.sigma**2)
         return ExperimentValue(self.value - other.value, sigma, unit=self.unit)
 
     def __rsub__(self, other):
-        return ExperimentValue.cast(other) - self
+        return ExperimentValue._cast(other) - self
 
     def __mul__(self, other):
-        other = ExperimentValue.cast(other)
+        other = ExperimentValue._cast(other)
         eps = math.sqrt(self.epsilon**2 + other.epsilon**2)
         return ExperimentValue(self.value * other.value, epsilon=eps)
 
@@ -97,12 +97,12 @@ class ExperimentValue:
         return self * other
 
     def __truediv__(self, other):
-        other = ExperimentValue.cast(other)
+        other = ExperimentValue._cast(other)
         eps = math.sqrt(self.epsilon**2 + other.epsilon**2)
         return ExperimentValue(self.value / other.value, epsilon=eps)
 
     def __rtruediv__(self, other):
-        return ExperimentValue.cast(other) / self
+        return ExperimentValue._cast(other) / self
 
     def __pow__(self, power, modulo=None):
         # TODO work with power as ExperimentalValue
@@ -127,6 +127,9 @@ class ExperimentValue:
 
     def __repr__(self):
         return self.__str__()
+
+    def __eq__(self, other):
+        return self.value == other.value and self.sigma == other.sigma
 
 
 def sqrt(ev):
