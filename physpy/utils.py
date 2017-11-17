@@ -34,3 +34,18 @@ def linear_plot(x, y, through_zero=True):
 
 def diff(theor, real):
     print('diff epsilon = {:.2f}%'.format(abs(theor - real) / theor * 100))
+
+def array_to_expvalue(arr, sigma=None, epsilon=None):
+    tmp = []
+    for x in arr:
+        tmp.append(pp.ExperimentValue(x, sigma, epsilon))
+
+    return np.array(tmp)
+
+def expvalue_array_to_float(arr):
+    tmp = []
+    for x in arr:
+        tmp.append(x.value)
+
+    return np.array(tmp)
+
