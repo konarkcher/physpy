@@ -20,7 +20,7 @@ def create_fig(title='', xlabel='x', ylabel='y'):
 def linear(x, y, through_zero=True, points=True, yerr=None, xerr=None):
     if points:
         if yerr is None or xerr is None:
-            plt.plot(x, y, 'bo')
+            plt.plot(x, y, 'b.')
         else:
             plt.errorbar(x, y, fmt='b,', yerr=yerr, xerr=xerr)
 
